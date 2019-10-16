@@ -1,0 +1,71 @@
+from unittest import TestCase
+from mock import Mock
+
+
+class Service(object):
+    def hello(self, name):
+        return "Hello " + name
+
+    def bye(self, name):
+        return "Bye " + name
+
+
+class MockExamplesTest(TestCase):
+    # ----------------------------------------- return value
+
+    def test_stub_return_value(self):
+        mock = Mock(spec=Service)
+        mock.hello.return_value = 1
+        self.assertEquals(1, mock.hello("name"))
+
+
+    # ----------------------------------------- called
+    def test_called(self):
+        mock = Mock(spec=Service)
+        mock.hello("world")
+        mock.hello.assert_called()
+
+    def test_called_property(self):
+        mock = Mock(spec=Service)
+        mock.hello("world")
+        self.assertTrue(self, mock.called)
+
+
+    # ---------------------------------------- called with
+    def test_called_with(self):
+        mock = Mock()
+        mock.method(1, 2, 3, test='wow')
+        mock.method.assert_called_with(1, 2, 3, test='wow')
+
+    def test_called_with_spec(self):
+        mock = Mock(spec=Service)
+        # mock.method(1)
+        # mock.method.assert_called_with(1)
+        mock.hello("world")
+        mock.hello.assert_called_with("world")
+
+    def test_called_once_with(self):
+        mock = Mock(spec=Service)
+        mock.hello("world")
+        mock.hello.assert_called_once_with("world")
+
+        # assert_any_call
+
+
+    # ---------------------------------------- call args
+    def test_called_args(self):
+        mock = Mock()
+        mock.method(1, 2)
+        self.assertEquals((1, 2),mock.method.call_args[0][0])
+
+    # ---------------------------------------------- side_effect
+
+    def test_side_effect(self):
+        mock = Mock(spec=Service)
+        mock.hello.side_effect=Exception("Boom!")
+        with self.assertRaises(Exception):
+            mock.hello("world")
+
+
+
+
