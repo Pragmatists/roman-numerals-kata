@@ -2,7 +2,7 @@
   "name": "tdd",
   "version": "0.0.0",
   "dependencies": {
-    "lodash": "~3.10.1"
+    "lodash": "~4.17.19"
   },
   "devDependencies": {
     "jasmine-core": "^2.4.1",
